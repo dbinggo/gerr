@@ -1,6 +1,9 @@
 package gerr
 
-import "fmt"
+import (
+	"context"
+	"fmt"
+)
 
 type Error interface {
 	Error() string
@@ -12,6 +15,10 @@ type Error interface {
 	Unwrap() error
 
 	Format(s fmt.State, verb rune)
+
+	Log(logger Logger)
+
+	LogCtx(ctx context.Context, logger Logger)
 }
 
 //type ErrorLog interface {
@@ -19,3 +26,8 @@ type Error interface {
 //}
 
 type Coder func() (code int, info string)
+
+type Logger interface {
+	Error(err error)
+	ErrorCtx(ctx context.Context, err error)
+}
