@@ -16,9 +16,9 @@ type Error interface {
 
 	Format(s fmt.State, verb rune)
 
-	Log(logger Logger)
+	Log(logger Logger) Error
 
-	LogCtx(ctx context.Context, logger Logger)
+	LogCtx(ctx context.Context, logger Logger) Error
 }
 
 //type ErrorLog interface {
