@@ -1,6 +1,7 @@
 package gerr
 
 import (
+	"errors"
 	"fmt"
 )
 
@@ -34,8 +35,13 @@ func NewCodeErrf(code int, format string, a ...any) Error {
 func WrapCodeErrf(err error, code int, format string, a ...any) Error {
 	return wrapErrf(err, code, format, a...)
 }
-func Wrap(err error) Error {
-	return wrapErrf(err, CodeServerErr, err.Error())
+
+func Wraps(errs ...error) Error {
+	err := errors.Join(errs...)
+	if err != nil {
+		return wrapErrf(errs[0], CodeServerErr, err.Error())
+	}
+	return nil
 }
 
 func WrapParamErrf(err error, format string, a ...any) Error {
