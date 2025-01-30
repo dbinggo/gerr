@@ -7,11 +7,13 @@ import (
 	"testing"
 )
 
+var testRecord = gerr.NewCodeErrf(1222, "test")
+
 // 测试ERR返回是否正常
-func TestErr1(t *testing.T) gerr.Error {
+func TestErr1(t *testing.T) {
 	// 这里模拟一个正常的函数调用
-	err := test1()
-	return err
+	test1()
+	return
 
 }
 
@@ -34,6 +36,13 @@ func TestErr2(t *testing.T) {
 	}
 }
 
+func TestErr3(t *testing.T) {
+	fmt.Printf("%+v", testRecord)
+	e := testRecord.Record()
+	fmt.Printf("%+v", e)
+
+}
+
 func test1() gerr.Error {
 	//我们不再返回 原声error 而是强制所有函数返回包装版本的error
 	// 目的 请在第一时间获得error之后将error加上堆栈信息和友好日志
@@ -41,18 +50,6 @@ func test1() gerr.Error {
 	err := returnErr()
 
 	err = gerr.WrapSysErrf(err, "服务内部异常")
-
-	err2 := returnErr()
-	err2 = gerr.WrapSysErrf(err, "服务内部异常")
-
-	err3 := returnErr()
-	err3 = gerr.WrapSysErrf(err, "服务内部异常")
-
-	err4 := returnErr()
-	err4 = gerr.WrapSysErrf(err, "服务内部异常")
-
-	err5 := returnErr()
-	err5 = gerr.WrapSysErrf(err, "服务内部异常")
 
 	fmt.Println()
 
@@ -66,15 +63,15 @@ func test1() gerr.Error {
 
 	if err != nil {
 
-		//err = gerr.WrapSysErrf(err, "服务内部异常") // 这里的信息就是包装给前端的信息
-		//fmt.Println("--------------------------------")
-		//fmt.Println(err) // 这里的信息就是包装给前端的信息
-		//fmt.Println("--------------------------------")
-		//fmt.Println(err.Error()) // 这里的信息就是包装给前端的信息
-		//fmt.Println("--------------------------------")
-		//fmt.Printf("%+v", err) // 这里是我们自己的堆栈信息
-		//fmt.Println("--------------------------------")
-		//return err.(gerr.Error) // 这里是强制返回包装err进行断言
+		err = gerr.WrapSysErrf(err, "服务内部异常") // 这里的信息就是包装给前端的信息
+		fmt.Println("--------------------------------")
+		fmt.Println(err) // 这里的信息就是包装给前端的信息
+		fmt.Println("--------------------------------")
+		fmt.Println(err.Error()) // 这里的信息就是包装给前端的信息
+		fmt.Println("--------------------------------")
+		fmt.Printf("%+v", err) // 这里是我们自己的堆栈信息
+		fmt.Println("--------------------------------")
+		return err.(gerr.Error) // 这里是强制返回包装err进行断言
 	}
 	return nil
 }

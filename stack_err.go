@@ -174,7 +174,7 @@ func callers(skips ...int) *stack {
 	if len(skips) > 0 {
 		skip = skips[0]
 	}
-	var depth = 5
+	var depth = 7
 	pcs := make([]uintptr, depth)
 	n := runtime.Callers(skip, pcs[:])
 	var st stack = pcs[0:n]

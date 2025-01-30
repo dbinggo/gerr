@@ -34,6 +34,16 @@ func (e *CodeErr) Format(s fmt.State, verb rune) {
 		_, _ = io.WriteString(s, e.Error())
 	}
 }
+
+// 用于刷新堆栈位置信息
+
+func (e *CodeErr) Record() Error {
+	return &withStack{
+		CodeErr: e,
+		stack:   callers(3),
+	}
+}
+
 func wrapErrf(err error, code int, format string, a ...any) Error {
 	e := &CodeErr{
 		code:  code,
@@ -60,8 +70,6 @@ func baseErr(msg string, code int) Error {
 	}
 }
 
-func New(code int, msg string) Coder {
-	return func() (int, string) {
-		return code, msg
-	}
+func New(code int, format string, val ...any) Error {
+	return baseErr(fmt.Sprintf(format, val...), code)
 }

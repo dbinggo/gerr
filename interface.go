@@ -14,6 +14,8 @@ type Error interface {
 
 	Unwrap() error
 
+	Record() Error
+
 	Format(s fmt.State, verb rune)
 
 	Log(logger Logger) Error
@@ -24,8 +26,6 @@ type Error interface {
 //type ErrorLog interface {
 //	Error(err error)
 //}
-
-type Coder func() (code int, info string)
 
 type Logger interface {
 	Error(err error)
