@@ -47,6 +47,11 @@ func Wraps(err1 Error, err2 error) Error {
 	return nil
 }
 
+// 仅仅做一层封装，方便定位错误
+func Wrap(err Error) Error {
+	return wrapErrf(err, err.Code(), err.Error())
+}
+
 func WrapParamErrf(err error, format string, a ...any) Error {
 	return wrapErrf(err, CodeParamNotValid, format, a...)
 }
