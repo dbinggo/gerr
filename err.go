@@ -39,10 +39,10 @@ func WrapCodeErrf(err error, code int, format string, a ...any) Error {
 // Wraps 两个错误合在一起，对前端展示err1的提示信息的同时提供error.Is方法
 // err1 前端显示错误
 // err2 实际错误
-func Wraps(err1 Error, err2 error) Error {
+func Wraps(err1 error, err2 error) Error {
 	err := errors.Join(err1, err2)
 	if err != nil {
-		return wrapErrf(err2, err1.Code(), err.Error())
+		return wrapErrf(err2, CodeServerErr, err.Error())
 	}
 	return nil
 }
