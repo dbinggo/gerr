@@ -36,6 +36,7 @@ func WrapCodeErrf(err error, code int, format string, a ...any) Error {
 	return wrapErrf(err, code, format, a...)
 }
 
+// Wraps 两个错误合在一起，对前端展示err1的提示信息的同时提供error.Is方法
 // err1 前端显示错误
 // err2 实际错误
 func Wraps(err1 Error, err2 error) Error {
