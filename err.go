@@ -36,10 +36,12 @@ func WrapCodeErrf(err error, code int, format string, a ...any) Error {
 	return wrapErrf(err, code, format, a...)
 }
 
-func Wraps(errs ...error) Error {
-	err := errors.Join(errs...)
+// err1 前端显示错误
+// err2 实际错误
+func Wraps(err1 Error, err2 error) Error {
+	err := errors.Join(err1, err2)
 	if err != nil {
-		return wrapErrf(errs[0], CodeServerErr, err.Error())
+		return wrapErrf(err2, err1.Code(), err.Error())
 	}
 	return nil
 }
